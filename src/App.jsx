@@ -1,15 +1,16 @@
 import React from 'react'
 import {ChatContext} from './context/ChatProvider'
+import NavBar from './components/NavBar'
 
 function App() {
 
-  const {mensaje} = React.useContext(ChatContext)
-  return (
+  const {usuario} = React.useContext(ChatContext)
+  return usuario !== null ?(
     <div>
-      <h2>
-        {mensaje}
-      </h2>
+      <NavBar />
     </div>
+  ) : (
+    'Loading...'
   )
 }
 
