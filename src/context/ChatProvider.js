@@ -12,10 +12,12 @@ const ChatProvider = ({children}) => {
     }
 
     const [usuario, setUsuario] = React.useState(dataUsuario)
-
+    const [mensajes, SetMensajes] = React.useState([])
 
     React.useEffect(() =>{
       detectarUsuario()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const detectarUsuario = () => {
@@ -26,6 +28,8 @@ const ChatProvider = ({children}) => {
                   email: user.email,
                   estado: true
                            })
+                 cargarMensajes()             
+         
             }else{
                 setUsuario({
                   uid: null,
@@ -34,6 +38,18 @@ const ChatProvider = ({children}) => {
                 })
             }
         })
+    }
+
+    const agregarMensajes = async(uidChat, textoInput) => {
+       try{
+         await db.collection('chat').add({
+             fecha: Date.now(),
+             texto: textoInput,
+             uid: uidChat
+         })
+       }catch(err){
+           console.log(err)
+       }
     }
 
     const ingresoUsuario = async() => {
@@ -50,8 +66,16 @@ const ChatProvider = ({children}) => {
        auth.signOut()
     }
 
+    const cargarMensajes = () => {
+        db.collection('chat')
+          .onSnapshot(query => {
+            const arrayMensajes = query.docs.map(item => item.data())
+            SetMensajes(arrayMensajes)  
+        })
+    }
+
     return (
-        <ChatContext.Provider value={{usuario, ingresoUsuario, cerrarSesion }}>
+        <ChatContext.Provider value={{usuario, ingresoUsuario, cerrarSesion, mensajes, agregarMensajes }}>
             {children}
         </ChatContext.Provider>
     )
