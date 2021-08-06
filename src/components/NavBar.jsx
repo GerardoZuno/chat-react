@@ -5,7 +5,7 @@ const NavBar = () => {
   const { usuario, ingresoUsuario, cerrarSesion } =
     React.useContext(ChatContext);
   return (
-    <nav className="navbar navbar-dark bg-dark my-10">
+    <nav className="navbar  navbar-dark bg-dark my-10">
       <span className="navbar-brand">Chat</span>
       <div>
         {usuario.estado ? (

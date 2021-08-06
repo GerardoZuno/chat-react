@@ -67,7 +67,7 @@ const ChatProvider = ({children}) => {
     }
 
     const cargarMensajes = () => {
-        db.collection('chat')
+        db.collection('chat').orderBy('fecha')
           .onSnapshot(query => {
             const arrayMensajes = query.docs.map(item => item.data())
             SetMensajes(arrayMensajes)  
